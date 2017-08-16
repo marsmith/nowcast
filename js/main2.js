@@ -34,7 +34,6 @@ $(document).ready(function () {
 		layers: [ESRIOceanBasemap, ESRIOceanReference],
 		attributionControl: false,
 		zoomControl: false
-
 	});
 
 	markers = new L.FeatureGroup();
@@ -104,7 +103,11 @@ function chooseTimeFrameFunction(e) {
 		type: "GET",
 		url: "getconditions2.php",
 		//data: "queryDate=" + queryValue,
-		data: { 'State': theChosenState, 'queryDate': queryDateGlobal, 'timeFrame': timeFrame },
+		data: {
+			'State': theChosenState,
+			'queryDate': queryDateGlobal,
+			'timeFrame': timeFrame
+		},
 		success: function (data) {
 			var curConditionWithEcoliArray = [];
 			//parse out conditions to json
@@ -146,16 +149,12 @@ function chooseTimeFrameFunction(e) {
 							FalseNonExceed++;
 						}
 
-
-
 						$('#recentConditionsTable').append('<tr><td>' + curCondition.DATE + '</td><td>' + curCondition.LAB_ECOLI + '</td><td>' + curCondition.NOWCAST_ECOLI + '</td><td>' + curCondition.NOWCAST_PROBABILITY + '</td><td>' + curCondition.ERROR_TYPE + '</td><td>' + curCondition.BEACH_CONDITIONS + '</td></tr>');
 						if (curCondition.LAB_ECOLI) {
 							curConditionWithEcoliArray.push(curCondition);
 						}
 					}
 				});
-
-
 
 				if (!$.isEmptyObject(curConditionWithEcoliArray)) {
 					$.each(curConditionWithEcoliArray, function (i, curConditionWithEcoliCalculations) {
@@ -184,8 +183,11 @@ function chooseTimeFrameFunction(e) {
 					if (addedErrorTypes / totalCount >= 0.5 && addedPrevDayErrorTypes / totalCount >= 0.5) {
 
 						//first pie chart (Nowcast's accuracy)
-						google.charts.load('current', { 'packages': ['corechart'] });
+						google.charts.load('current', {
+							'packages': ['corechart']
+						});
 						google.charts.setOnLoadCallback(drawChartNowcastAccuracy);
+
 						function drawChartNowcastAccuracy() {
 
 							var data = google.visualization.arrayToDataTable([
@@ -201,19 +203,25 @@ function chooseTimeFrameFunction(e) {
 								'title': 'Nowcast Error Types ' + currentOpenSite + ' (Click for stats)',
 								'width': '100%',
 								'height': '100%',
-								'chartArea': { 'width': '100%', 'height': '80%' },
-								'legend': { 'position': 'none' }
+								'chartArea': {
+									'width': '100%',
+									'height': '80%'
+								},
+								'legend': {
+									'position': 'none'
+								}
 							};
 
 							var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
 							chart.draw(data, options);
-
 
 						}
 						//second pie chart (persistence model)
-						google.charts.load('current', { 'packages': ['corechart'] });
+						google.charts.load('current', {
+							'packages': ['corechart']
+						});
 						google.charts.setOnLoadCallback(drawChartPersistenceModel);
+
 						function drawChartPersistenceModel() {
 
 							var data = google.visualization.arrayToDataTable([
@@ -229,12 +237,16 @@ function chooseTimeFrameFunction(e) {
 								'title': 'Persistence Model Error Types ' + currentOpenSite + ' (Click for stats)',
 								'width': '100%',
 								'height': '100%',
-								'chartArea': { 'width': '100%', 'height': '80%' },
-								'legend': { 'position': 'none' }
+								'chartArea': {
+									'width': '100%',
+									'height': '80%'
+								},
+								'legend': {
+									'position': 'none'
+								}
 							};
 
 							var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
-
 							chart.draw(data, options);
 						}
 					} else {
@@ -247,12 +259,9 @@ function chooseTimeFrameFunction(e) {
 					$('#piechart').html('<div class="alert alert-warning"><strong>Error:</strong> You must select "Whole season" from dropdown to see pie charts.</div>');
 					$('#piechart2').html("");
 				}
-
-
 			}
 			$("#showPieChart").show();
 		}
-
 	});
 	changedTimePeriod = false;
 }
@@ -335,7 +344,11 @@ function processURLparams() {
 		$("#sitelink").html("<a href='https://ny.water.usgs.gov/maps/nowcast/' style='text-decoration: none;color:red;'>Powered by <font color='black'>Nowcast Beach Status</font>. Click here to see the full map of beaches.</a>");
 		$("#usgsfooter, #aboutModal, #legend, #topnav").remove();
 		$("#body").css("padding-top", "0px");
-		$("html, body, #map").css({ "height": "-webkit-calc(100% - 8px)", "height": "-moz-calc(100% - 8px)", "height": "calc(100% - 8px)" });
+		$("html, body, #map").css({
+			"height": "-webkit-calc(100% - 8px)",
+			"height": "-moz-calc(100% - 8px)",
+			"height": "calc(100% - 8px)"
+		});
 
 		getSites();
 	} else if (URLparams.state) {
@@ -429,14 +442,14 @@ function off() {
 
 function displayMapAt(lat, lon, zoom) {
 	$("#gmap").html(
-		"<iframe id=\"map_frame\" "
-		+ "width=\"100%\" height=\"200px\" frameborder=\"0\" scrolling=\"no\" marginheight=\"0\" marginwidth=\"0\" "
-		+ "src=\"https://www.google.com/maps?f=q&amp;output=embed&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q="
-		+ lat + "," + lon
-		+ "&amp;aq=&amp;sll=48.669026,19.699024&amp;sspn=4.418559,10.821533&amp;ie=UTF8&amp;ll="
-		+ lat + "," + lon
-		+ "&amp;spn=0.199154,0.399727&amp;t=m&amp;z="
-		+ zoom + "\"" + "></iframe>");
+		"<iframe id=\"map_frame\" " +
+		"width=\"100%\" height=\"200px\" frameborder=\"0\" scrolling=\"no\" marginheight=\"0\" marginwidth=\"0\" " +
+		"src=\"https://www.google.com/maps?f=q&amp;output=embed&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=" +
+		lat + "," + lon +
+		"&amp;aq=&amp;sll=48.669026,19.699024&amp;sspn=4.418559,10.821533&amp;ie=UTF8&amp;ll=" +
+		lat + "," + lon +
+		"&amp;spn=0.199154,0.399727&amp;t=m&amp;z=" +
+		zoom + "\"" + "></iframe>");
 }
 
 function onMarkerClick(e) {
@@ -460,7 +473,6 @@ function onMarkerClick(e) {
 	}
 	console.log("Marker clicked", e.layer.options.siteData.currentConditions.BEACH_CONDITIONS, setPopupColor(e.layer.options.siteData.currentConditions.BEACH_CONDITIONS), e.layer.options.siteData);
 
-
 	if (e.layer.options.siteData.STATE == "OH" || e.layer.options.siteData.STATE == "PA") {
 		$('#3rdTab').html('<a href="#tab3" data-toggle="tab"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<span class="beachName"></span> Details</a>');
 		//$('#3rdTab').html('<li role="presentation"><a href="#tab3" data-toggle="tab"><i class="fa fa-info-circle"></i>&nbsp;&nbsp;<span class="beachName"></span> Details</a></li>');
@@ -473,15 +485,11 @@ function onMarkerClick(e) {
 	//update modal template with actual site data
 	$('.beachName').html(e.layer.options.siteData.BEACH_NAME);
 
-
-
-
 	//check if we have today's date
 	if (e.layer.options.siteData.currentConditions.DATE == moment().format('YYYY-MM-DD')) {
 		//show badge indicating current day
 		$('#conditionsDate').html(e.layer.options.siteData.currentConditions.DATE + '&nbsp;&nbsp;<span class="badge">Today</span>');
-	}
-	else {
+	} else {
 		//otherwise just show date
 		$('#conditionsDate').html(e.layer.options.siteData.currentConditions.DATE);
 	}
@@ -490,8 +498,7 @@ function onMarkerClick(e) {
 	if (e.layer.options.siteData.WEB_ENABLED == 2) {
 		$('#beachConditionBar').attr('style', 'padding:3px;color:white;background-color:#d3d3d3');
 		$('#beachCondition').html('Off-Season&nbsp;&nbsp;<i data-toggle="popover" data-content="Generally, the recreational season is Memorial Day to Labor Day" class="fa fa-info-circle fa-lg"></i>');
-	}
-	else {
+	} else {
 		//set beach conditions in marker popup
 		$('#beachConditionBar').attr('style', 'padding:3px;color:white;background-color:' + setPopupColor(e.layer.options.siteData.currentConditions.BEACH_CONDITIONS));
 		$('#beachCondition').html(e.layer.options.siteData.currentConditions.BEACH_CONDITIONS + '&nbsp;&nbsp;<i  data-toggle="popover" data-content="' + setConditionPopup(e.layer.options.siteData.currentConditions.BEACH_CONDITIONS) + '" class="fa fa-info-circle fa-lg"></i>&nbsp;&nbsp;' + e.layer.options.siteData.currentConditions.BEACH_REASON);
@@ -517,8 +524,6 @@ function onMarkerClick(e) {
 			$('#recentConditionsTable').append('<tr><td>' + this.DATE + '</td><td>' + this.LAB_ECOLI + '</td><td>' + this.NOWCAST_ECOLI + '</td><td>' + this.NOWCAST_PROBABILITY + '</td><td>' + this.ERROR_TYPE + '</td><td>' + this.BEACH_CONDITIONS + '</td></tr>');
 		});
 	}
-
-
 
 	/*
 	//loop over extra beach data lookup file
@@ -548,7 +553,9 @@ function onMarkerClick(e) {
 	});
 }
 
-function idify(str) { return str.replace(/\s+/g, '-').toLowerCase(); }
+function idify(str) {
+	return str.replace(/\s+/g, '-').toLowerCase();
+}
 
 function getSites() {
 	on();
@@ -557,7 +564,9 @@ function getSites() {
 	$.ajax({
 		type: "GET",
 		url: "getbeaches.php",
-		data: { 'State': theChosenState },
+		data: {
+			'State': theChosenState
+		},
 		success: function (data) {
 
 			//write sites to global object
@@ -603,7 +612,9 @@ function drawSites(siteArray) {
 		}*/
 
 		//add sites
-		var curMarker = new customMarker([parseFloat(curSite.LATITUDE), parseFloat(curSite.LONGITUDE)], { siteData: curSite });
+		var curMarker = new customMarker([parseFloat(curSite.LATITUDE), parseFloat(curSite.LONGITUDE)], {
+			siteData: curSite
+		});
 
 		/*	if (curMarker.options.siteData.STATE && curMarker.options.siteData.STATE !== 'na' && $('#stateDropdownSelect option[value="' + curMarker.options.siteData.STATE + '"]').length == 0) {
 				//add it
@@ -677,7 +688,9 @@ function drawSites(siteArray) {
 	if (!zoomFlag) {
 		//zoom to points
 		var bounds = L.latLngBounds(markerArray);
-		map.fitBounds(bounds, { padding: [100, 100] });//works!
+		map.fitBounds(bounds, {
+			padding: [100, 100]
+		}); //works!
 		// Calculate the offset
 		//var offset = map.getSize().x*-0.1;
 		// Then move the map
@@ -698,7 +711,11 @@ function querySites(queryValue, $btn) {
 		type: "GET",
 		url: "getconditions2.php",
 		//data: "queryDate=" + queryValue,
-		data: { 'State': theChosenState, 'queryDate': queryValue, 'timeFrame': timeFrame },
+		data: {
+			'State': theChosenState,
+			'queryDate': queryValue,
+			'timeFrame': timeFrame
+		},
 		success: function (data) {
 
 			//parse out conditions to json
@@ -732,8 +749,7 @@ function querySites(queryValue, $btn) {
 						icon: '',
 						markerColor: 'lightgray'
 					});
-				}
-				else {
+				} else {
 					var curMarkerSymbol = L.AwesomeMarkers.icon({
 						prefix: 'fa',
 						icon: '',
@@ -749,7 +765,11 @@ function querySites(queryValue, $btn) {
 					type: "GET",
 					url: "getexport.php",
 					//data: "queryDate=" + queryValue + "&USGSID=" + curMarker.options.siteData.ENDDAT_CODE,
-					data: { 'State': theChosenState, 'queryDate': queryValue, 'USGSID': curMarker.options.siteData.ENDDAT_CODE },
+					data: {
+						'State': theChosenState,
+						'queryDate': queryValue,
+						'USGSID': curMarker.options.siteData.ENDDAT_CODE
+					},
 					success: function (data) {
 
 						//parse out export table data to json
@@ -802,8 +822,6 @@ function querySites(queryValue, $btn) {
 					}
 				});
 			});
-
-
 		}
 	});
 }
@@ -816,25 +834,55 @@ function toPascalCase(str) {
 
 //icon color lookup function
 function setPopupColor(condition) {
-	if (condition == 'No Condition Reported') { return '#41abdd' }
-	if (condition == '') { return '#41abdd' }
-	if (condition == 'Good') { return '#75b230' }
-	if (condition == 'Advisory') { return '#d54733' }
-	if (condition == 'Closed') { return '#3a3a3a' }
+	if (condition == 'No Condition Reported') {
+		return '#41abdd'
+	}
+	if (condition == '') {
+		return '#41abdd'
+	}
+	if (condition == 'Good') {
+		return '#75b230'
+	}
+	if (condition == 'Advisory') {
+		return '#d54733'
+	}
+	if (condition == 'Closed') {
+		return '#3a3a3a'
+	}
 }
 
 function setMarkerColor(condition) {
-	if (condition == 'No Condition Reported') { return 'blue' }
-	if (condition == '') { return 'blue' }
-	if (condition == 'Good') { return 'green' }
-	if (condition == 'Advisory') { return 'red' }
-	if (condition == 'Closed') { return 'black' }
+	if (condition == 'No Condition Reported') {
+		return 'blue'
+	}
+	if (condition == '') {
+		return 'blue'
+	}
+	if (condition == 'Good') {
+		return 'green'
+	}
+	if (condition == 'Advisory') {
+		return 'red'
+	}
+	if (condition == 'Closed') {
+		return 'black'
+	}
 }
 
 function setConditionPopup(condition) {
-	if (condition == 'No Condition Reported') { return 'No data has been received for this beach' }
-	if (condition == '') { return 'No data has been received for this beach' }
-	if (condition == 'Good') { return 'E.coli bacterial levels are estimated to be within the water quality standard and acceptable for swimming.' }
-	if (condition == 'Advisory') { return 'E.coli bacterial levels are estimated to exceed the water quality standard and be unacceptable for swimming.' }
-	if (condition == 'Closed') { return 'Beach is closed for the day.' }
+	if (condition == 'No Condition Reported') {
+		return 'No data has been received for this beach'
+	}
+	if (condition == '') {
+		return 'No data has been received for this beach'
+	}
+	if (condition == 'Good') {
+		return 'E.coli bacterial levels are estimated to be within the water quality standard and acceptable for swimming.'
+	}
+	if (condition == 'Advisory') {
+		return 'E.coli bacterial levels are estimated to exceed the water quality standard and be unacceptable for swimming.'
+	}
+	if (condition == 'Closed') {
+		return 'Beach is closed for the day.'
+	}
 }
